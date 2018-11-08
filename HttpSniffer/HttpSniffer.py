@@ -9,24 +9,23 @@ class HttpSniffer:
     async def sniffer(cls, request):
         print(request.method, request.raw_path)
         request_target = cls.target
-        request_path = request.path
-        request_params = request.query
+        request_raw_path = request.raw_path
         request_headers = request.headers.copy()
         request_data = await request.read()
         handler_name = 'on_{0}_request_{1}'.format(request.method.lower(), request.path.replace('/', '_'))
         if hasattr(request.app['sniffer'], handler_name):
-            target, path, request_params, headers, data = getattr(request.app['sniffer'], handler_name)(
-                request_target,
-                request_path,
-                request_params,
+            request_target, request_raw_path, request_headers, request_data = getattr(
+                request.app['sniffer'], handler_name)(
+                request_raw_path,
                 request_headers,
-                request_data
+                request_data,
+                request
             )
         async with ClientSession() as session:
             async with session.request(
                     request.method,
-                    "{0}{1}".format(request_target, request_path),
-                    params=request_params,
+                    "{0}{1}".format(request_target, request_raw_path),
+                    # params=request_params,
                     proxy=cls.proxy,
                     headers=request_headers,
                     data=request_data) as response:
@@ -40,15 +39,15 @@ class HttpSniffer:
         if hasattr(request.app['sniffer'], handler_name):
             response_headers, response_data = getattr(request.app['sniffer'], handler_name)(
                 request_target,
-                request_path,
-                request_params,
+                request_raw_path,
                 request_headers,
                 request_data,
+                request,
                 response_headers,
                 response_data
             )
-        # if headers.popone('Cache-Control', False):
-        #     headers.add('Cache-Control', 'no-cache, no-store, max-age=0')
+        if response_headers.popone('Cache-Control', False):
+            response_headers.add('Cache-Control', 'no-cache, no-store, max-age=0')
 
         response_headers.popone('Content-Length', False)
         resp = web.Response(
@@ -63,10 +62,10 @@ class HttpSniffer:
         app = web.Application()
         app.router.add_route('*', '/{wildcard:.*}', cls.sniffer)
         cls.target = target
-        cls.sniffer = kwargs.get('proxy', None)
+        cls.proxy = kwargs.get('proxy', None)
         app['sniffer'] = cls()
         web.run_app(app, port=kwargs.get("port"))
 
 
 if __name__ == '__main__':
-    HttpSniffer.run_proxy('http://10.76.172.92/', proxy="http://127.0.0.1:8888")
+    HttpSniffer.run_proxy('http://10.76.172.92', proxy="http://127.0.0.1:8888")
