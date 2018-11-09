@@ -16,6 +16,7 @@ class HttpSniffer:
         if hasattr(request.app['sniffer'], handler_name):
             request_target, request_raw_path, request_headers, request_data = getattr(
                 request.app['sniffer'], handler_name)(
+                request_target,
                 request_raw_path,
                 request_headers,
                 request_data,
