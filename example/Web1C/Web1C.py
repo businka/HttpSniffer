@@ -4,36 +4,32 @@ import re
 
 
 class Web1C(HttpSniffer.HttpSniffer):
-    folder = './data'
+    folder = '/data'
 
-    def on_post_request__buh3_ru_RU_e1cib_logForm(self, request_target, request_raw_path, request_headers, request_data,
-                                                  request):
+    def on_post_request__buh3_ru_RU_e1cib_logForm(self, _request, request):
 
-        data = self.escape_res(request_data.decode())
+        data = self.escape_res(_request['data'].decode())
         data = json.loads(data, encoding='utf-8')
         try:
             if data['root']['key'] == "Справочник.Контрагенты.ФормаСписка":
                 self.save_data_to_file(
-                    'ЗапросКонтрагентФормаСписка_{0}'.format(request_headers.get('pragma', 0)),
+                    'ЗапросКонтрагентФормаСписка_{0}'.format(_request['headers'].get('pragma', 0)),
                     data
                 )
         except KeyError:
             pass
-        return request_target, request_raw_path, request_headers, request_data
 
-    def on_post_request__buh3_ru_RU_e1cib_dlist(self, request_target, request_raw_path, request_headers, request_data,
-                                                  request):
-        data = self.escape_res(request_data.decode())
+    def on_post_request__buh3_ru_RU_e1cib_dlist(self, _request, request):
+        data = self.escape_res(_request['data'].decode())
         data = json.loads(data, encoding='utf-8')
         try:
             # if data['root']['key'] == "Справочник.Контрагенты.ФормаСписка":
                 self.save_data_to_file(
-                    'ЗапросDlistКонтрагенты_{0}'.format(request_headers.get('pragma', 0)),
+                    'ЗапросDlistКонтрагенты_{0}'.format(_request['headers'].get('pragma', 0)),
                     data
                 )
         except KeyError:
             pass
-        return request_target, request_raw_path, request_headers, request_data
 
     @staticmethod
     def escape_res(text):
@@ -48,4 +44,4 @@ class Web1C(HttpSniffer.HttpSniffer):
 
 
 if __name__ == '__main__':
-    Web1C.run_proxy('http://10.76.172.92')  # , proxy="http://127.0.0.1:8888")
+    Web1C.run_proxy('http://10.76.172.92')  # , proxy="http://127.0.0.1:8888")  # Fiddler

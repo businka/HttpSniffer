@@ -1,0 +1,34 @@
+<array>
+    <object>
+        <str name="Идентификатор">005056b7-7242-1ee8-acd2-62a8a5312323</str>
+        <str name="Дата">07.08.2018</str>
+        <str name="Сумма">0.00</str>
+        <object name="НашаОрганизация">
+            <object name="СвЮЛ"/>
+        </object>
+        <object name="Контрагент">
+            <object name="СвЮЛ">
+                <str name="Название">СБИСПартнер</str>
+            </object>
+        </object>
+        <array name="Событие"/>
+        <object name="Состояние">
+            <str name="Название">Отправлен</str>
+        </object>
+        <array name="Этап"/>
+        <array name="ДокументОснование"/>
+        <array name="Редакция"/>
+        <array name="Вложение">
+            <object>
+                <object name="Файл"/>
+                <array name="Редакция"/>
+                <array name="Подпись"/>
+            </object>
+            <object>
+                <object name="Файл"/>
+                <array name="Редакция"/>
+                <array name="Подпись"/>
+            </object>
+        </array>
+    </object>
+</array>
