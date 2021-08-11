@@ -1,9 +1,9 @@
 from setuptools import setup
-import HttpSniffer
+import proxy
 
 setup(
-    name='HttpSniffer',
-    version=HttpSniffer.__version__,
+    name='proxy',
+    version=proxy.__version__,
     description='http sniffer',
     long_description='',
     classifiers=[
@@ -20,7 +20,7 @@ setup(
         'Framework :: AsyncIO',
         'Framework :: aiohttp',
     ],
-    keywords='http sniffer',
+    keywords='http tcp proxy',
     url='http://github.com/businka/HttpSniffer',
     author='Razgovorov Mikhail',
     author_email='',

@@ -1,12 +1,12 @@
-import HttpSniffer
+import proxy
 import json
 import re
 
 
-class Web1C(HttpSniffer.HttpSniffer):
+class Web1C(proxy.HttpSniffer):
     folder = '/data'
 
-    def on_post_request__buh3_ru_RU_e1cib_logForm(self, _request, request):
+    def on_post_request_buh3_ru_RU_e1cib_logForm(self, _request, request):
 
         data = self.escape_res(_request['data'].decode())
         data = json.loads(data, encoding='utf-8')
@@ -19,7 +19,7 @@ class Web1C(HttpSniffer.HttpSniffer):
         except KeyError:
             pass
 
-    def on_post_request__buh3_ru_RU_e1cib_dlist(self, _request, request):
+    def on_post_request_buh3_ru_RU_e1cib_dlist(self, _request, request):
         data = self.escape_res(_request['data'].decode())
         data = json.loads(data, encoding='utf-8')
         try:
